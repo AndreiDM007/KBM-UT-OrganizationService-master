@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "Kebormed.Core.OrganizationService.Grpc.Generated";
+
+
+message CreateUserInvitation {
+    message Request {
+        int32 OrganizationId = 1;
+        int32 OrganizationUserId = 2;
+        string ExternalUserId = 3;
+    }
+
+    message Response {
+        string InvitationGuid = 1;
+    }
+}
+
+message GetUserInvitation {
+    message Request {
+        string InvitationGuid = 1;
+        string ExternalUserId = 2;
+    }
+
+    message Response {
+        int32 OrganizationId = 1;
+        string OrganizationName = 2;
+        int32 OrganizationUserId = 3;
+        int64 CreatedAt = 4;
+    }
+}
+
+message UpdateUserInvitation {
+    message Request {
+        string InvitationGuid = 1;
+        google.protobuf.Int64Value AcceptedAt = 2;
+        google.protobuf.Int64Value DeclinedAt = 3;
+        string ExternalUserId = 4;
+    }
+    
+    message Response {
+    }
+}
+message DeleteUserInvitation {
+    message Request {
+        string InvitationGuid = 1;
+        string ExternalUserId = 2;
+    }
+    
+    message Response {
+        
+    }
+}
+
+service UserInvitationService {
+    rpc CreateUserInvitation(CreateUserInvitation.Request) returns (CreateUserInvitation.Response);
+    rpc GetUserInvitation(GetUserInvitation.Request) returns (GetUserInvitation.Response);
+    rpc UpdateUserInvitation(UpdateUserInvitation.Request) returns (UpdateUserInvitation.Response);
+    rpc DeleteUserInvitation(DeleteUserInvitation.Request) returns (DeleteUserInvitation.Response);
+} 

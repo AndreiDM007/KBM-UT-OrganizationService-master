@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "Kebormed.Core.OrganizationService.Grpc.Generated";
+
+message QueryGroupAuthorization {
+	message Permission {
+		google.protobuf.Int32Value TargetOrganizationUserId = 1;
+		google.protobuf.BoolValue Allowed = 2;
+
+	}
+	message Request {
+		google.protobuf.Int32Value RequestOrganizationUserId = 1;
+		repeated google.protobuf.Int32Value TargetOrganizationUserIdCollection = 2;
+		google.protobuf.Int32Value OrganizationId = 3;
+	}
+
+	message Response {
+		google.protobuf.Int32Value RequestOrganizationUserId = 1;
+		google.protobuf.Int32Value OrganizationId = 2;
+		repeated Permission Permissions = 3;
+	}
+}
+
+
+service GroupAuthorizationService {
+	rpc QueryGroupAuthorization (QueryGroupAuthorization.Request) returns (QueryGroupAuthorization.Response);
+}

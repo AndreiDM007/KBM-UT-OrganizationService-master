@@ -1,0 +1,122 @@
+@Library('Core.JenkinsSharedLibraries@next') _
+
+node {
+
+  cleanWs deleteDirs: true
+
+  // constants
+  def objectServicePrefix = 'core'
+  def objectServiceName = 'organizationservice'
+  def objectServiceNugetPrefix = 'Kebormed.Core'
+  def objectServiceNugetGrpcName = 'OrganizationService.Grpc'
+  def objectServiceNugetMessagingName = 'OrganizationService.Messaging'
+
+  // vars
+  def sha = ''
+  def dockerRegistryUrl = ''
+  def dockerRegistryUsername = ''
+  def nugetRegistryKey = ''
+  def nugetRegistryAddress = ''
+
+  // helpers
+  withCredentials([string(credentialsId: 'Docker_Registry_Username', variable: 'username')]) {
+    dockerRegistryUsername = "${username}"
+    dockerRegistryUrl = "http://${username}.azurecr.io"
+  }
+  withCredentials([string(credentialsId: "Nuget_Registry_Address", variable: 'address')]) {
+    nugetRegistryAddress = "${address}"
+  }
+  withCredentials([string(credentialsId: "Nuget_Registry_Key", variable: 'key')]) {
+    nugetRegistryKey = "${key}"
+  }
+
+  // stages
+  stage('Clone Repository') {
+    sha = checkout([
+      $class: 'GitSCM',
+      branches: scm.branches,
+      extensions: [[$class: 'CloneOption', depth: 0, shallow: false], [$class: 'RelativeTargetDirectory', relativeTargetDir: "${objectServicePrefix}.${objectServiceName}"]],
+      userRemoteConfigs: scm.userRemoteConfigs
+    ])
+    .GIT_COMMIT
+    .substring(0,10)
+  }
+
+  docker.image("microsoft/dotnet:2.2-sdk").inside ("-u root --privileged") {
+    
+    dir("${objectServicePrefix}.${objectServiceName}"){
+      
+      stage ("Build Sources"){
+        withCredentials([file(credentialsId: 'Nuget_Registry_Config', variable: 'path')]) {
+          sh "dotnet restore --configfile $path"
+        }
+        sh "dotnet publish -c Release -o out"
+      }
+
+      stage ("Run Unit Tests"){
+        sh "dotnet test"
+      }
+
+      stage ("Publish gRPC pkg") {
+        dir("${objectServiceNugetGrpcName}") {
+          def version = nugetVersion()
+          sh "dotnet pack --configuration Release --no-build --output nupkgs /p:PackageVersion=$version"
+          sh "dotnet nuget push nupkgs/${objectServiceNugetPrefix}.${objectServiceNugetGrpcName}.${version}.nupkg -k $nugetRegistryKey -s $nugetRegistryAddress"
+        }
+      }
+
+      stage ("Publish Messaging pkg") {
+        dir("${objectServiceNugetMessagingName}") {
+          def version = nugetVersion()
+          sh "dotnet pack --configuration Release --no-build --output nupkgs /p:PackageVersion=$version"
+          sh "dotnet nuget push nupkgs/${objectServiceNugetPrefix}.${objectServiceNugetMessagingName}.${version}.nupkg -k $nugetRegistryKey -s $nugetRegistryAddress"
+        }
+      }
+    }
+  }
+
+  // run Static Code Analysis for PRs
+  def isPullRequest = env.BRANCH_NAME.startsWith('PR')
+  conditionalStage (isPullRequest, "Static Code Analysis") {
+    dir("${objectServicePrefix}.${objectServiceName}") {
+
+      def data = readYaml file: 'sonar-runner.yaml'
+      bitbucketSonarScanner repoUUID: data.sonarPullrequestBitbucketcloudRepository,
+                            repoOwnerUUID: data.sonarPullrequestBitbucketcloudOwner,
+                            sonarHostUrl: data.sonarHostUrl,
+                            sonarLogin: data.sonarLogin,
+                            sonarProjectName: data.sonarProjectName,
+                            sonarProjectKey: data.sonarProjectKey,
+                            sonarOrganization: data.sonarOrganization,
+                            sonarSources: data.sonarSources,
+                            sonarProjectBaseDir: data.sonarProjectBaseDir,
+                            sonarPullrequestProvider: data.sonarPullrequestProvider
+    }
+  }
+
+  stage('Build Docker Image') {
+    dir("${objectServicePrefix}.${objectServiceName}") {
+      dockerImage = docker.build(dockerRegistryUsername + "/" + objectServicePrefix + "-" + objectServiceName)
+    }
+  }
+
+  stage('Publish Docker Image') {
+    dir("${objectServicePrefix}.${objectServiceName}") {
+      docker.withRegistry(dockerRegistryUrl, 'Azure_Container_Registry') {
+        dockerImage.push(environment() + "-" + sha)
+        dockerImage.push(environment() + "-" + "latest")
+      }
+    }
+  }
+
+  updateProposal  isFanOutUpdate: true,
+                  targetRepoEnv: environment(),                  
+                  bitbucketTeamNameId: "Bitbucket_Team_Name",
+                  jenkinsBitBucketAccountId: "Jenkins_BitBucket_Account",
+                  jenkinsBitBucketUsernameId: "Jenkins_BitBucket_Username",
+                  objectServicePrefix: objectServicePrefix,
+                  objectServiceName: objectServiceName,
+                  version: sha
+    
+  cleanWs deleteDirs: true
+}

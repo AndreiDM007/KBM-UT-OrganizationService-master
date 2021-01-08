@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "Kebormed.Core.OrganizationService.Grpc.Generated";
+
+message CreateOrganization {
+    message Request {
+        string Name = 1;
+		string TransactionId = 2;
+		bool IsActive = 3;
+    }
+    message Response {
+        int32 OrganizationId = 1;
+    }
+}
+
+message QueryOrganization {
+	message Request {
+		string ExternalUserId = 1;
+	}
+	message Response {
+		int32 OrganizationId = 1;
+	}
+}
+
+message GetOrganization {
+	message Request {
+		int32 OrganizationId = 1;
+	}
+	message Response {
+		int32 OrganizationId = 1;
+		string Name = 2;
+		bool IsActive = 3;
+	}
+}
+
+message UpdateOrganization {
+	message Request {
+		google.protobuf.Int32Value OrganizationId = 1;
+		google.protobuf.StringValue Name = 2;
+		google.protobuf.BoolValue IsActive = 3;
+	}
+	message Response {
+		
+	}
+}
+
+message ExistOrganization {
+	message Request {
+		google.protobuf.StringValue Name = 1;
+	}
+	message Response {
+		bool Exists = 1;
+	}
+}
+
+message ExistsOrganizationById {
+	message Request {
+		int32 OrganizationId = 1;
+	}
+	message Response {
+		bool Exists = 1;
+	}
+}
+
+message DeleteOrganization {
+	message Request {
+		int32 OrganizationId = 1;
+	}
+	message Response {		
+	}
+}
+
+service OrganizationService {
+    rpc CreateOrganization (CreateOrganization.Request) returns (CreateOrganization.Response);
+	rpc QueryOrganization (QueryOrganization.Request) returns (QueryOrganization.Response);
+	rpc GetOrganization (GetOrganization.Request) returns (GetOrganization.Response);
+	rpc UpdateOrganization (UpdateOrganization.Request) returns (UpdateOrganization.Response);
+    rpc ExistOrganization (ExistOrganization.Request) returns (ExistOrganization.Response);
+    rpc ExistsOrganizationById (ExistsOrganizationById.Request) returns (ExistsOrganizationById.Response);
+    rpc DeleteOrganization (DeleteOrganization.Request) returns (DeleteOrganization.Response);
+}

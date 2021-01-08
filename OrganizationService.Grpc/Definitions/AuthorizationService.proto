@@ -1,0 +1,206 @@
+﻿syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "Kebormed.Core.OrganizationService.Grpc.Generated";
+
+
+message UpdateOrganizationUserPermission {
+	message Request {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.StringValue UserId = 2;
+		google.protobuf.StringValue Permissions = 3;
+	}
+	
+	message Response {		
+	}
+}
+
+message QueryOrganizationUserPermission {
+	message Request {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.Int32Value Page = 3;
+		google.protobuf.Int32Value PageSize = 4;
+		google.protobuf.StringValue Direction = 5;
+		google.protobuf.StringValue OrderBy = 6;
+		google.protobuf.Int32Value OrganizationId = 7;
+    }
+	
+	message Response {
+		Pagination Pagination = 1;
+		repeated OrganizationUserPermissionListView Result = 2;
+	}
+
+	message Pagination {
+		int32 Total = 1;
+		int32 Page = 2;
+		int32 PageSize = 3;
+	}
+	
+	message OrganizationUserPermissionListView {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.StringValue OrganizationId = 2;
+		google.protobuf.StringValue UserId = 3;
+		google.protobuf.StringValue Permissions = 4;
+	}
+}
+
+message QueryOrganizationUserAndRolePermission {
+	message Request {
+		google.protobuf.StringValue UserId = 1;
+		google.protobuf.Int32Value OrganizationId = 2;
+	}
+	
+	message Response {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.Int32Value OrganizationId = 2;
+		google.protobuf.StringValue UserId = 3;
+		repeated google.protobuf.StringValue Permissions = 4;
+	}
+}
+
+message CreateOrganizationUserRole {
+	message Request {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.Int32Value OrganizationId = 3;
+	}
+	message Response {
+		int32 OrganizationUserRoleId = 1;
+	}
+}
+
+message DeleteOrganizationUserRole {
+	message Request {	
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.Int32Value OrganizationId = 3;
+	}
+	message Response {		
+	}
+}
+
+message QueryOrganizationUserRole {
+	message Request {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.Int32Value OrganizationId = 3;
+		google.protobuf.Int32Value Page = 4;
+		google.protobuf.Int32Value PageSize = 5;
+		google.protobuf.StringValue Direction = 6;
+		google.protobuf.StringValue OrderBy = 7;
+	}
+	
+	message Response {
+		Pagination Pagination = 1;
+		repeated OrganizationUserRoleListView Result = 2;
+	}
+
+	message Pagination {
+		int32 Total = 1;
+		int32 Page = 2;
+		int32 PageSize = 3;
+	}
+	
+	message OrganizationUserRoleListView {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.Int32Value OrganizationId = 3;
+	}
+}
+
+message ExistRolePermissionById{
+	message Request {
+		string RoleId = 1;
+		google.protobuf.Int32Value OrganizationId = 2;
+	}
+	message Response {
+		bool Exists = 1;
+	}
+}
+
+message CreateRolePermission {
+	message Request {
+		google.protobuf.Int32Value OrganizationId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.StringValue RoleName = 3;
+		google.protobuf.StringValue Permissions = 4;
+		google.protobuf.StringValue Description = 5;
+		google.protobuf.BoolValue IsDefault = 6;
+		google.protobuf.StringValue DisplayName = 7;
+	}
+	message Response {
+		int32 RolePermissionId = 1;
+	}
+}
+
+message UpdateRolePermission {
+	message Request {
+		google.protobuf.Int32Value OrganizationId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.StringValue RoleName = 3;
+		google.protobuf.StringValue Permissions = 4;
+		google.protobuf.StringValue Description = 5;
+		google.protobuf.StringValue DisplayName = 7;
+	}
+	
+	message Response {		
+	}
+}
+
+message DeleteRolePermission {
+	message Request {	
+		google.protobuf.Int32Value OrganizationId = 1;
+		google.protobuf.StringValue RoleId = 2;
+	}
+	message Response {		
+	}
+}
+
+message QueryRolePermission {
+	message Request {
+		google.protobuf.Int32Value OrganizationId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.Int32Value Page = 3;
+		google.protobuf.Int32Value PageSize = 4;
+		google.protobuf.StringValue Direction = 5;
+		google.protobuf.StringValue OrderBy = 6;
+		google.protobuf.StringValue RoleName = 7;
+	}
+	
+	message Response {
+		Pagination Pagination = 1;
+		repeated RolePermissionListView Result = 2;
+	}
+
+	message Pagination {
+		int32 Total = 1;
+		int32 Page = 2;
+		int32 PageSize = 3;
+	}
+	
+	message RolePermissionListView {
+		google.protobuf.Int32Value OrganizationId = 1;
+		google.protobuf.StringValue RoleId = 2;
+		google.protobuf.StringValue RoleName = 3;
+		google.protobuf.StringValue Permissions = 4;
+		google.protobuf.StringValue Description = 5;
+		google.protobuf.BoolValue IsDefault = 6;
+		google.protobuf.StringValue DisplayName = 7;
+	}
+}
+
+service AuthorizationService {
+    rpc UpdateOrganizationUserPermission (UpdateOrganizationUserPermission.Request) returns (UpdateOrganizationUserPermission.Response);
+	rpc QueryOrganizationUserPermission (QueryOrganizationUserPermission.Request) returns (QueryOrganizationUserPermission.Response);
+    rpc QueryOrganizationUserAndRolePermission (QueryOrganizationUserAndRolePermission.Request) returns (QueryOrganizationUserAndRolePermission.Response);
+	rpc CreateOrganizationUserRole (CreateOrganizationUserRole.Request) returns (CreateOrganizationUserRole.Response);
+    rpc DeleteOrganizationUserRole (DeleteOrganizationUserRole.Request) returns (DeleteOrganizationUserRole.Response);
+	rpc QueryOrganizationUserRole (QueryOrganizationUserRole.Request) returns (QueryOrganizationUserRole.Response);
+	rpc ExistRolePermissionById (ExistRolePermissionById.Request) returns (ExistRolePermissionById.Response);
+	rpc CreateRolePermission (CreateRolePermission.Request) returns (CreateRolePermission.Response);
+	rpc UpdateRolePermission (UpdateRolePermission.Request) returns (UpdateRolePermission.Response);
+	rpc DeleteRolePermission (DeleteRolePermission.Request) returns (DeleteRolePermission.Response);
+	rpc QueryRolePermission (QueryRolePermission.Request) returns (QueryRolePermission.Response);
+}

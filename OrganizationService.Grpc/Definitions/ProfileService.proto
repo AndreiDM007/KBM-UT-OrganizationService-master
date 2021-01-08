@@ -1,0 +1,64 @@
+﻿syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "Kebormed.Core.OrganizationService.Grpc.Generated";
+
+message ProfileValue {
+	google.protobuf.Int32Value ProfileParameterId = 1;
+	google.protobuf.StringValue Value = 2;	
+	google.protobuf.StringValue TransactionId = 3;
+}
+
+message CreateProfile {
+	message Request {
+		repeated ProfileValue ProfileValuesListView = 1;
+		int32 OrganizationUserId = 2;
+		string TransactionId = 3;
+		int32 OrganizationId = 4;
+	}
+	message Response {
+		int32 ProfileId = 1;
+	}
+}
+
+message GetProfile {
+	message Request {
+		int32 ProfileId = 1;
+		int32 OrganizationId = 2;
+	}
+	message Response {
+		int32 ProfileId = 1;
+		repeated ProfileValue ProfileValuesListView = 2;
+		int32 OrganizationUserId = 3;
+	}
+}
+
+message UpdateProfile {
+	message Request {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.Int32Value ProfileId = 2;
+		repeated ProfileValue ProfileValuesListView = 3;
+		google.protobuf.Int32Value OrganizationId = 4;
+	}
+	message Response {
+	}
+}
+
+message DeleteProfile {
+	message Request {
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.Int32Value ProfileId = 2;
+		google.protobuf.Int32Value OrganizationId = 3;
+	}
+	message Response {
+	}
+}
+
+service ProfileService {
+    rpc CreateProfile (CreateProfile.Request) returns (CreateProfile.Response);
+	rpc GetProfile (GetProfile.Request) returns (GetProfile.Response);
+	rpc UpdateProfile (UpdateProfile.Request) returns (UpdateProfile.Response);
+	rpc DeleteProfile (DeleteProfile.Request) returns (DeleteProfile.Response);
+}

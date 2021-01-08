@@ -1,0 +1,101 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Kebormed.Core.OrganizationService.Web</RootNamespace>
+    <AssemblyName>Kebormed.Core.OrganizationService.Web</AssemblyName>
+    <NoWarn>$(NoWarn);NU1605</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Business\Services\Profile\Models\" />
+    <Folder Include="Data\Entities\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />    
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.2.2" />      
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+
+    <PackageReference Include="AutoMapper" Version="8.0.0" />  
+    <PackageReference Include="OpenTracing.Contrib.Grpc" Version="0.1.0" />
+    <PackageReference Include="SimpleInjector" Version="4.4.3" />
+    <PackageReference Include="Jaeger" Version="0.3.3" />    
+    <PackageReference Include="AspNetCore.HealthChecks" Version="1.0.0" />
+    <PackageReference Include="MailKit" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrganizationService.Grpc\OrganizationService.Grpc.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Google.Protobuf">
+      <HintPath>..\OrganizationService.Tests\out\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="Hazelcast.Net">
+      <HintPath>..\OrganizationService.Tests\out\Hazelcast.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Humanizer">
+      <HintPath>..\OrganizationService.Tests\out\Humanizer.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Business">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Communication.Grpc">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Communication.Grpc.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Communication.Http">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Communication.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Data.EntityFrameworkCore">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Data.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.DependencyInjection.SimpleInjector">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.DependencyInjection.SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Logging.Log4Net">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Logging.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Messaging.Abstractions">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Messaging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Messaging.Hazelcast">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Messaging.Hazelcast.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.OrganizationService.Messaging">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.OrganizationService.Messaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Kebormed.Core.Saga">
+      <HintPath>..\OrganizationService.Tests\out\Kebormed.Core.Saga.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

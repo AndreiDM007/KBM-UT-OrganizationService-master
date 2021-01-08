@@ -1,0 +1,10 @@
+sonarPullrequestBitbucketcloudRepository: '{18e83980-5066-416e-90d0-abacb12893a0}'
+sonarPullrequestBitbucketcloudOwner: '{95906921-4c58-446f-9004-141413abe62a}'
+sonarHostUrl: https://sonarcloud.io
+sonarLogin: 41acca7fe15a3c568355badb5d643afb881d1511
+sonarProjectName: core.organizationservice
+sonarProjectKey: kbm-backend_core.organizationservice
+sonarOrganization: kebormed
+sonarSources: ./
+sonarProjectBaseDir: ./
+sonarPullrequestProvider: bitbucketcloud

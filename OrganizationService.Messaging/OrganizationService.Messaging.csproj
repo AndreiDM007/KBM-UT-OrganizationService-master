@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <AssemblyName>Kebormed.Core.OrganizationService.Messaging</AssemblyName>
+        <RootNamespace>Kebormed.Core.OrganizationService.Messaging</RootNamespace>
+        <NoWarn>$(NoWarn);NU1605</NoWarn>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <Reference Include="Kebormed.Core.Business">
+        <HintPath>out\Kebormed.Core.Business.dll</HintPath>
+      </Reference>
+      <Reference Include="Kebormed.Core.Messaging.Hazelcast">
+        <HintPath>out\Kebormed.Core.Messaging.Hazelcast.dll</HintPath>
+      </Reference>
+      <Reference Include="Kebormed.Core.OrganizationService.Messaging">
+        <HintPath>out\Kebormed.Core.OrganizationService.Messaging.dll</HintPath>
+      </Reference>
+      <Reference Include="Kebormed.Core.Saga">
+        <HintPath>out\Kebormed.Core.Saga.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

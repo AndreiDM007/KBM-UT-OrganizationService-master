@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+option csharp_namespace = 'Kebormed.Core.OrganizationService.Grpc.Generated';
+
+message Ping {
+    message Request {
+    }
+    message Response {
+        int64 Timestamp = 1;
+    }
+}
+
+service HealthService {
+    rpc Ping (Ping.Request) returns (Ping.Response);
+}

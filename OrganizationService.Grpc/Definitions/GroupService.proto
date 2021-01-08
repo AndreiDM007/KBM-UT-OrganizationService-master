@@ -1,0 +1,148 @@
+﻿syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "Kebormed.Core.OrganizationService.Grpc.Generated";
+
+message CreateGroup {
+	message Request {
+		int32 OrganizationId = 1;
+		string Name = 2;
+		google.protobuf.Int32Value ParentGroupId = 3;
+		google.protobuf.StringValue Description = 4;
+	}
+	message Response {
+		int32 GroupId = 1;
+	}
+}
+
+message UpdateGroup {
+	message Request {
+		int32 OrganizationId = 1;
+		int32 GroupId = 2;
+		google.protobuf.Int32Value ParentGroupId = 3;
+		google.protobuf.StringValue Name = 4;	 
+		google.protobuf.StringValue Description = 5;
+	}
+	
+	message Response {		
+	}
+}
+
+message DeleteGroup {
+	message Request {	
+		int32 OrganizationId = 1;
+		int32 GroupId = 2;
+	}
+	message Response {		
+	}
+}
+
+message QueryGroups {
+	message GroupListView {
+		int32 GroupId = 1;
+		google.protobuf.Int32Value  ParentGroupId = 2;
+		google.protobuf.StringValue Name = 3;		
+		google.protobuf.StringValue Description = 4;	
+	}
+
+	message Request {	
+		int32 OrganizationId = 1;
+	}
+	message Response {	
+		repeated GroupListView Result = 2;
+	}
+}
+
+message AssociateOrganizationUserToGroup {
+	message Request {
+		int32 OrganizationId = 1;
+		int32 GroupId = 2;
+		int32 OrganizationUserId = 3;
+        repeated google.protobuf.Int32Value AllowedUserTypes = 4;
+	}
+	message Response {		
+	}
+}
+
+message DisassociateOrganizationUserFromGroup {
+	message Request {
+		int32 OrganizationId = 1;
+		int32 GroupId = 2;
+		int32 OrganizationUserId = 3;
+	}
+	message Response {		
+	}
+}
+
+message QueryGroupMember {
+	message Request {
+		int32 GroupId = 1;
+		int32 OrganizationId = 2;
+		google.protobuf.Int32Value Page = 3;
+		google.protobuf.Int32Value PageSize = 4;
+		google.protobuf.StringValue Direction = 5;
+		google.protobuf.StringValue OrderBy = 6;
+        repeated google.protobuf.Int32Value TargetUserTypes = 7;
+    }
+	
+	message Response {
+		Pagination Pagination = 1;
+		repeated GroupMemberListView Result = 2;
+	}
+
+	message Pagination {
+		int32 Total = 1;
+		int32 Page = 2;
+		int32 PageSize = 3;
+	}
+	
+	message GroupMemberListView {
+		string Id = 1;
+		int64 CreationTime = 2;
+		string UserName = 3;
+		int32 UserType = 4;
+		string FirstName = 5;
+		string LastName = 6;
+		int32 OrganizationUserId = 7;
+	}
+}
+
+message QueryMemberGroup {
+	message Request {
+		int32 MemberId = 1;
+		int32 OrganizationId = 2;
+	}
+
+	message Response {
+		repeated MemberGroupListView Result = 1;
+	}
+
+	message MemberGroupListView {
+		string GroupId = 1;
+		string GroupName = 2;
+	}
+}
+
+message ExistGroupByName{
+	message Request {	
+		string Name = 1;			
+		int32 OrganizationId = 3;
+	}
+	message Response {		
+		bool Exists = 1;        
+	}
+}
+
+service GroupService {
+	rpc CreateGroup (CreateGroup.Request) returns (CreateGroup.Response);
+    rpc UpdateGroup (UpdateGroup.Request) returns (UpdateGroup.Response);
+    rpc DeleteGroup (DeleteGroup.Request) returns (DeleteGroup.Response);
+    rpc QueryGroups (QueryGroups.Request) returns (QueryGroups.Response);
+    rpc AssociateOrganizationUserToGroup (AssociateOrganizationUserToGroup.Request) returns (AssociateOrganizationUserToGroup.Response);
+	rpc DisassociateOrganizationUserFromGroup(DisassociateOrganizationUserFromGroup.Request) returns (DisassociateOrganizationUserFromGroup.Response);		
+	rpc QueryGroupMember (QueryGroupMember.Request) returns (QueryGroupMember.Response);
+	rpc QueryMemberGroup (QueryMemberGroup.Request) returns (QueryMemberGroup.Response);
+	rpc ExistGroupByName (ExistGroupByName.Request) returns (ExistGroupByName.Response);	
+}

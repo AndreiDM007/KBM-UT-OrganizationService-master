@@ -1,0 +1,383 @@
+﻿syntax = "proto3";
+
+package Kebormed.Core.OrganizationService.Grpc.Generated;
+
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "Kebormed.Core.OrganizationService.Grpc.Generated";
+
+message CreateOrganizationUser {
+    message Request {
+        string UserId = 1;
+        int32 OrganizationId = 2;
+        int32 UserType = 3;
+		string TransactionId = 4;
+        google.protobuf.StringValue Username = 8;
+        google.protobuf.StringValue FirstName = 9;
+        google.protobuf.StringValue LastName = 10;
+        google.protobuf.StringValue Email = 11;
+        google.protobuf.BoolValue IsActive = 12;
+        google.protobuf.BoolValue IsLocked = 13;
+        google.protobuf.BoolValue IsPendingActivation = 14;
+    }
+    message Response {
+        int32 OrganizationUserId = 1;
+    }
+}
+
+message DeleteOrganizationUser {
+    message Request {
+	    google.protobuf.Int32Value OrganizationUserId = 1;
+	    google.protobuf.Int32Value UserType = 2;
+	    google.protobuf.Int32Value OrganizationId = 3;
+    }
+    message Response {
+	    google.protobuf.StringValue UserId = 1;
+	    google.protobuf.BoolValue IsLastUserIdRelationship = 2;
+    }
+}
+
+message QueryOrganizationUsers {
+	message Request {
+		google.protobuf.Int32Value Page = 1;
+		google.protobuf.Int32Value PageSize = 2;
+		google.protobuf.StringValue Q = 3;
+		google.protobuf.StringValue OrderBy = 4;
+		google.protobuf.StringValue Direction = 5;
+		google.protobuf.BoolValue IsActive = 6;
+		google.protobuf.Int32Value OrganizationId = 7;
+		repeated int32 UserTypes = 8;
+	}
+	message Response {
+		Pagination Pagination = 1;
+		repeated OrganizationUserListView Result = 2;
+	}
+
+	message Pagination {
+		google.protobuf.Int32Value Total = 1;
+		google.protobuf.Int32Value Page = 2;
+		google.protobuf.Int32Value PageSize = 3;
+	}
+
+	message OrganizationUserListView {
+		int32 OrganizationUserId = 1;
+		int32 OrganizationId = 2;
+		int32 UserType = 3;
+		google.protobuf.StringValue Email = 4;
+		google.protobuf.StringValue Username = 5;
+		google.protobuf.StringValue FirstName = 6;
+		google.protobuf.StringValue LastName = 7;		
+		repeated RoleListView Roles = 8;			
+		google.protobuf.BoolValue IsActive = 9;		
+		google.protobuf.BoolValue IsPendingActivation = 10;
+		google.protobuf.Int64Value LastLoginTime = 11;	
+		google.protobuf.Int64Value CreatedAt = 12;
+		google.protobuf.BoolValue IsLocked = 13;
+	}
+
+	message RoleListView {
+		google.protobuf.StringValue RoleName = 1;
+		google.protobuf.StringValue Description = 2;
+		google.protobuf.StringValue DisplayName = 3;
+		google.protobuf.BoolValue IsDefault = 4;
+	}
+}
+
+message QueryOrganizationUser {
+    message ProfileValues {
+		int32 ProfileParameterId = 1;
+		string Value = 2;
+	}
+
+    message OrganizationUserListView {
+        int32 OrganizationUserId = 1;
+		int32 OrganizationId = 2;
+		int32 ProfileId = 3;
+		string UserId = 4;
+		repeated ProfileValues ProfileValuesListView = 5;
+    }
+
+    message Request {
+		repeated int32 OrganizationIdList = 1;  
+        int32 UserType = 2;
+    }
+    message Response {
+        repeated OrganizationUserListView Result = 1;
+        int32 Total = 2;
+    }
+}
+
+message GetOrganizationUser {
+
+    message UserGroup {
+        int32 GroupId = 1;
+        string GroupName = 2;
+    }
+    message ProfileValue {
+        int32 ProfileParameterId = 1;
+        string Value = 2;
+    }
+    message AssociatedOrganizationUser {
+        int32 AssociationType = 1;
+        int32 OrganizationUserId = 2;
+    }
+    message Request {
+	    int32 OrganizationUserId = 1;	    
+        int32 UserType = 2;
+	    int32 OrganizationId = 3;	    
+    }
+    message Response {
+		int32 OrganizationUserId = 1;
+		int32 OrganizationId = 2;
+		string UserId = 3;   
+		int32 ProfileId = 4;		
+        repeated ProfileValue ProfileValuesListView = 5;
+        repeated AssociatedOrganizationUser AssociatedOrganizationUserListView = 6;
+        repeated UserGroup GroupListView = 13;
+		google.protobuf.Int64Value CreatedAt = 7;
+        google.protobuf.StringValue Username = 8;
+        google.protobuf.StringValue FirstName = 9;
+        google.protobuf.StringValue LastName = 10;
+        google.protobuf.StringValue Email = 11;
+        google.protobuf.BoolValue IsActive = 12;   
+        google.protobuf.BoolValue IsLocked = 14;
+        google.protobuf.BoolValue IsPendingActivation = 15;
+		google.protobuf.Int64Value LastLoginAt = 16;
+        google.protobuf.BoolValue HasAcceptedInvitation = 17;
+    }
+};
+
+message GetOrganizationAdmin{	
+	message Request {
+		int32 OrganizationId = 1;	 
+		int32 UserType = 2;
+	}
+
+	message Response {
+		int32 OrganizationUserId = 1;
+		string Email = 2;
+		google.protobuf.StringValue FirstName = 3;
+		google.protobuf.StringValue LastName = 4;
+		google.protobuf.StringValue Username = 5;
+		google.protobuf.Int64Value CreatedAt = 6;
+	}
+}
+
+message GetOrganizationUserByExternalUserId{
+    message Request {
+        int32 OrganizationId = 1;
+        string UserId = 2;
+    }
+
+    message Response {
+        int32 OrganizationUserId = 1;
+        string Username = 2;
+		int32 UserType = 3;
+    }
+}
+
+message UpdateOrganizationUser {
+    message Request {
+        google.protobuf.Int32Value OrganizationUserId = 1;
+        google.protobuf.Int32Value OrganizationId = 2;
+        google.protobuf.Int32Value UserType = 3;
+        google.protobuf.StringValue TransactionId = 4;
+        google.protobuf.StringValue FirstName = 9;
+        google.protobuf.StringValue LastName = 10;
+        google.protobuf.StringValue Email = 11;
+        google.protobuf.BoolValue IsActive = 12;
+    }
+    message Response {
+    }
+}
+
+message CreateOrganizationUsersAssociation {
+    message Request {
+        int32 OrganizationUserId1 = 1;
+        int32 OrganizationUserId2 = 2;
+        int32 AssociationType = 3;
+        string TransactionId = 4;
+        int32 OrganizationId = 5;
+    }
+    
+    message Response {
+        int32 AssociationId = 1;
+    }
+}
+
+message UpdateOrganizationUsersAssociation {
+	message Request {
+		int32 OrganizationUserId1 = 1;
+		int32 OrganizationUserId2 = 2;
+		int32 AssociationType = 3;
+		string TransactionId = 4;
+		int32 OrganizationId = 5;
+	}
+    
+	message Response {
+	}
+}
+
+message DeleteOrganizationUsersAssociation {
+	message Request {
+		int32 AssociationType = 1;
+		int32 OrganizationUserId = 2;
+	}
+    
+	message Response {
+	}
+}
+
+message PublishCreateOrganizationUser {
+    message Request {
+        int32 OrganizationUserId = 1;
+        int32 UserType = 2;
+		string TransactionId = 3;
+		string Username = 4;
+		string FirstName = 5;
+		string LastName = 6;
+        string Email = 7;
+        bool IsActive = 8;
+        string UserId = 9;
+        int32 OrganizationId = 10;
+    }
+    message Response {
+        int64 CreatedAt = 1;
+    }
+}
+
+message PublishUpdateOrganizationUser {
+    message Request {
+        int32 OrganizationUserId = 1;
+        int32 UserType = 2;        
+        string FirstName = 3;
+        string LastName = 4;
+        string Email = 5;
+        bool IsActive = 6;        
+        int32 OrganizationId = 7;
+    }
+    message Response {
+        int64 CreatedAt = 1;
+    }
+}
+
+message QueryUserOrganizations{
+	message Request {	
+		string UserId = 1;
+    }
+    message Response {		
+        repeated int32 OrganizationIds = 1;        
+    }
+}
+
+message ExistOrganizationUser{
+	message Request {	
+		google.protobuf.Int32Value OrganizationUserId = 1;
+		google.protobuf.Int32Value UserType = 2;		
+		google.protobuf.Int32Value OrganizationId = 3;
+	}
+	message Response {		
+		google.protobuf.BoolValue Exists = 1;        
+	}
+}
+
+message ExistOrganizationUserByEmail{
+	message Request {
+		google.protobuf.StringValue Email = 1;
+	}
+	message Response {
+		bool Exists = 1;
+	}
+}
+
+message ExistOrganizationUserByUsername{
+	message Request {
+		google.protobuf.StringValue Username = 1;
+	}
+	message Response {
+		bool Exists = 1;
+	}
+}
+
+message GetOrganizationUserType{
+	message Request {
+		int32 OrganizationUserId = 1;
+		int32 OrganizationId = 2;
+	}
+	message Response {
+		int32 UserType = 1;
+	}
+}
+
+message GetSingleOrganizationOrgUsers{
+    message SingleOrganizationOrgUserListView {
+        string UserId = 1;
+        google.protobuf.StringValue Email = 2;
+		google.protobuf.Int32Value OrganizationId = 3;
+		google.protobuf.Int32Value OrganizationUserId = 4;
+		google.protobuf.StringValue FirstName = 5;
+		google.protobuf.StringValue LastName = 6;
+		google.protobuf.BoolValue IsActive = 7;
+		google.protobuf.Int32Value UserType = 8;
+    }
+	message Request {
+		int32 OrganizationId = 1;
+	}
+	message Response {
+		repeated SingleOrganizationOrgUserListView Result = 1;
+	}
+}
+
+message SetUserLockStatus{
+	message Request {
+		string ExternalUserId = 1;
+        bool IsLocked = 2;
+	}
+	message Response {
+		
+	}
+}
+
+message SetUserPendingActivationStatus{
+	message Request {
+		string ExternalUserId = 1;
+        bool IsPendingActivation = 2;
+	}
+	message Response {
+		
+	}
+}
+
+message SetLastLoginTime{
+	message Request {
+		string ExternalUserId = 1;
+        int64 LastLoginAt = 2;
+	}
+	message Response {
+		
+	}
+}
+
+service OrganizationUserService {
+	rpc QueryUserOrganizations (QueryUserOrganizations.Request) returns (QueryUserOrganizations.Response);
+    rpc QueryOrganizationUser (QueryOrganizationUser.Request) returns (QueryOrganizationUser.Response);
+	rpc QueryOrganizationUsers (QueryOrganizationUsers.Request) returns (QueryOrganizationUsers.Response);	
+    rpc GetOrganizationUser(GetOrganizationUser.Request) returns (GetOrganizationUser.Response);
+    rpc GetOrganizationUserByExternalUserId(GetOrganizationUserByExternalUserId.Request) returns (GetOrganizationUserByExternalUserId.Response);
+    rpc GetOrganizationAdmin(GetOrganizationAdmin.Request) returns (GetOrganizationAdmin.Response);
+    rpc ExistOrganizationUser(ExistOrganizationUser.Request) returns (ExistOrganizationUser.Response);
+    rpc ExistOrganizationUserByEmail(ExistOrganizationUserByEmail.Request) returns (ExistOrganizationUserByEmail.Response);
+    rpc ExistOrganizationUserByUsername(ExistOrganizationUserByUsername.Request) returns (ExistOrganizationUserByUsername.Response);
+    rpc CreateOrganizationUser (CreateOrganizationUser.Request) returns (CreateOrganizationUser.Response);
+    rpc UpdateOrganizationUser (UpdateOrganizationUser.Request) returns (UpdateOrganizationUser.Response);
+    rpc DeleteOrganizationUser (DeleteOrganizationUser.Request) returns (DeleteOrganizationUser.Response);
+    rpc CreateOrganizationUsersAssociation(CreateOrganizationUsersAssociation.Request) returns (CreateOrganizationUsersAssociation.Response);
+	rpc UpdateOrganizationUsersAssociation(UpdateOrganizationUsersAssociation.Request) returns (UpdateOrganizationUsersAssociation.Response);
+	rpc DeleteOrganizationUsersAssociation(DeleteOrganizationUsersAssociation.Request) returns (DeleteOrganizationUsersAssociation.Response);
+    rpc PublishCreateOrganizationUser(PublishCreateOrganizationUser.Request) returns (PublishCreateOrganizationUser.Response);
+	rpc PublishUpdateOrganizationUser(PublishUpdateOrganizationUser.Request) returns (PublishUpdateOrganizationUser.Response);	    
+	rpc GetOrganizationUserType(GetOrganizationUserType.Request) returns (GetOrganizationUserType.Response);
+	rpc GetSingleOrganizationOrgUsers(GetSingleOrganizationOrgUsers.Request) returns (GetSingleOrganizationOrgUsers.Response);
+	rpc SetUserLockStatus(SetUserLockStatus.Request) returns (SetUserLockStatus.Response);
+	rpc SetUserPendingActivationStatus(SetUserPendingActivationStatus.Request) returns (SetUserPendingActivationStatus.Response);
+	rpc SetLastLoginTime(SetLastLoginTime.Request) returns (SetLastLoginTime.Response);
+}
