@@ -15,12 +15,19 @@ namespace OrganizationService.Tests.Utils
             mock.Setup(r => r.ElementType).Returns(queryable.ElementType);
             mock.Setup(r => r.Expression).Returns(queryable.Expression);
         }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         public static Mock<DbSet<T>> MockDbSet<T>(List<T> list) where T : class
         {
             var mock = new Mock<DbSet<T>>();
             mock.SetupIQueryable(list.AsQueryable());
             return mock;
         }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     }
 }
