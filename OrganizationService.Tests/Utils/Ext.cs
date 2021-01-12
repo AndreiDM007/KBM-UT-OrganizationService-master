@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace OrganizationService.Tests.Utils
@@ -12,6 +14,13 @@ namespace OrganizationService.Tests.Utils
             mock.Setup(r => r.Provider).Returns(queryable.Provider);
             mock.Setup(r => r.ElementType).Returns(queryable.ElementType);
             mock.Setup(r => r.Expression).Returns(queryable.Expression);
+        }
+
+        public static Mock<DbSet<T>> MockDbSet<T>(List<T> list) where T : class
+        {
+            var mock = new Mock<DbSet<T>>();
+            mock.SetupIQueryable(list.AsQueryable());
+            return mock;
         }
     }
 }
